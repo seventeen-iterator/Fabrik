@@ -6,7 +6,7 @@ import tensorflow as tf
 model = Sequential()
 model.add(LSTM(512,
                return_sequences=True,
-               input_shape=(10,13),
+               input_shape=(10, 13),
                activation='tanh',
                kernel_initializer='he_uniform',
                recurrent_initializer='RandomNormal',
