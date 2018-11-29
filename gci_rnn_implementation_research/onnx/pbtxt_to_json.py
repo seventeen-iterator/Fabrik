@@ -5,7 +5,7 @@ import tensorflow as tf
 import onnxmltools
 import sys
 
-OPSET=7
+OPSET = 7
 
 try:
     model_file = sys.argv[1]
