@@ -1,7 +1,7 @@
 # [Fabrik] Research implementation method for RNN package support in tensorflow import
 This research was made for Google Code-in task from [Cloud-CV](https://cloudcv.org).
 
-Before running code install common requirements.
+Before running attached code install common requirements.
 ## Problem
 As for now, Fabrik cannot export models for Tensorflow containing any recurrence. And it's pretty hard to implement, because there's no operations inside `.pbtxt` like "SimpleRNN" or "LSTM", so we have to find another way to add support for recurrence.
 ## Observations
@@ -11,19 +11,25 @@ If we look at several `.pbtxt` files, we may notice some facts:
 - If we try to search dropout rates, we'll end up with nothing. But we'll find `1 - dropout` values. Nodes containing them named `keep_prob`.
 - Regularizations `l1` includes abs operation and `l2` includes square operation. And we can notice respective nodes which can be used as regularization indicator for specific values.
 There's also `observe_consts.py` to make observations easier.
+### Tensorflow and Keras exported models problem investigation
+If we observe `_TF` prefixed files in models folder, we will see that they have different from unprefixed ones names. If we develop program to detect keras exported programs, it will fail to detect tensorflow exported, and vice versa.
+
+In order to develop unified algorithms we have to use indicative properties of recurrence.
+![]()
 ## Suggestions
 If we wish to keep the same functionality, there's `detect_rnn.py` that can extract some values from `.pbtxt` models. It just fetches needed nodes and read values from them. Initializer extraction logic is defined in `init_detector.py`.
 You can play around with code and attached models typing:
 ```
-python detect_rnn.py models/<desired_model_file>
+python detect_rnn.py models/<desired_non_tf_model_file>
 ```
 You can compare result with [original settings](models/models_original_settings.md).
 
-This seems to be pretty naive implementation of tensorflow import. But as long as there's no specified recurrent operations, it's the simplest of the only ways to enhance tensorflow import with recurrence support.
+This code will fail to detect anything inside `_TF` prefixed models. But 
+
 
 But if we don't care about saving already implemented functionality and are ready to rewrite the whole code of some Fabrik modules, we can:
 - Generate a Python code for init model and export through syntax analysis of user code.
-- Consider implementing `.onnx` file format, since they can be exported and imported by a wide range of other frameworks including Tensorflow. Following [this tutorial](https://github.com/onnx/tutorials/blob/master/tutorials/OnnxTensorflowExport.ipynb) we can come up with that we don't have to use `.pbtxt`.
+- It could possibly be somehow implemented with ONNX format. See [ONNX investigation folder](onnx/)
 ## Notes
 ### `init_detector.py`
 - Detecting truncating initializers is not working at the moment. Also detection of random normal is naive. There's `RandomNormal` and `TruncatedNormal` nodes inside model. Fetching them will make import more robust.
