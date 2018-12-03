@@ -8,22 +8,31 @@ Researchers, who use Fabrik for building neural networks, have to draw diagrams 
 During research, I managed to found some ways. They even can be divided into two groups.
 ### Based on deep learning frameworks
 These methods share the common weakness: they cannot draw unsupported layers. For example, Keras cannot draw LRN layer. Also they could be implemented in backend only.
+
+Note that all tools can implemented with algorithms of conversion Fabrik net to framework model directly, without creating model files.
 #### Keras
 Keras have its own utilities, described in its [documentation](https://keras.io/visualization/). All methods are based on [Pydot](https://github.com/pydot/pydot) library, a Python interface of [Graphviz](http://graphviz.org/). One of the utilities is used in the `print_keras_model.py`. Below there is VQI model representation drawn by Keras.
 
 ![](KerasVis.png)
+To get similar with this or other model type:
+```
+python print_keras_model.py ../example/keras/<desired_json_model> <desired_image_name>
+```
 #### Caffe
 Caffe has its own script for visualisation. It actually uses pydot, too. Type `python ~/caffe/caffe/python/draw_net.py --help` to see usage help. Below is vizualised AlexNet.
 
 ![](CaffeVis.png)
+```
+python ~/caffe/caffe/python/draw_net.py ../example/caffe/<desired_prototxt_model> <desired_image_name>
+```
 #### Tensorflow
-Tensorflow has Tensorboard for graph visualisations. Still cannot see the way how to use it for creating an image, not interactive DOM.
+Tensorflow has Tensorboard for graph visualisations. Still cannot see the way how to use it for creating an image, not interactive page.
 
 Also Tensorflow method cannot be used for recurrent layers due to weird representation of them in `.pbtxt`.
 ### Based on Fabrik's frontend
 These ones mostly for frontend representation. Also they depends only on Fabrik represen
 #### Creating an extension
-If we decided to create an extension for Fabrik, we could obtain DOM of the graph that already represented and convert it to image. There are a [JS library](https://github.com/tsayen/dom-to-image) for doing such things. Resulted image will look like a large screenshot of Fabrik.
+If we decided to create an extension for Fabrik, we could obtain DOM of the graph that already represented and convert it to image. There are a [JS library](https://github.com/tsayen/dom-to-image) for doing such things. Resulted image will look like a large screenshot of Fabrik net.
 #### Implementing using JSON representation
 If we dig inside Fabrik a little deeper, we find out that Fabrik stores neural network inside state as JS object. There are obtained sample net representation in `state_net.json`. It's Lenet MNIST with some layers deleted.
 
