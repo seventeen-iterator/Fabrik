@@ -1,9 +1,7 @@
-# [Fabrik] Research about adding support for exporting model graphs from Fabrik
-This research was made for Google Code-in task by Cloud-CV.
-
-Attached code requires common requirements, plus `networkx` and `pydot` Python packages.
+# Research about adding support for exporting model graphs from Fabrik
+Attached code requires [common dependencies](../requirements/common.txt), plus `networkx` and `pydot` Python packages.
 ## Problem
-Researchers, who use Fabrik for building neural networks, have to draw diagrams by hand from scratch, because Fabrik still does not provide any tool to draw them automatically. This research observes some ways to implement such tool.
+Currently there's no tools for drawing Fabrik neural network diagram directly, without need to do it by hand. This research observes some ways to implement such function.
 ## Observations
 During research, I managed to found some ways. They even can be divided into two groups.
 ### Based on deep learning frameworks
